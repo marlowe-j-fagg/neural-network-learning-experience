@@ -18,15 +18,26 @@ def group_by_digit(images, labels):
     return grouped
 
 train_grouped = group_by_digit(train_images, train_labels)
-test_grouped = group_by_digit(test_images, test_labels)
+c = group_by_digit(test_images, test_labels)
 
 print("Training counts:", [len(x) for x in train_grouped])
 print("Test counts:", [len(x) for x in test_grouped])
 #end of not mine [rest is mine]
 
+for a in range(10):
+    for i in range (len(train_grouped[a])):
+        size = (28, 28)
+        new_image = Image.new('L',size)
+        n=0
+        for y in range (28):
+            for x in range (28):
+                new_image.putpixel((x,y),train_grouped[a][i][n])
+                n+=1
+        name="images/training/"+str(a)+"_"+str(i)+".png"
+        new_image.save(name)
 
 for a in range(10):
-    for i in range (len(test_images[a])):
+    for i in range (len(train_grouped[a])):
         size = (28, 28)
         new_image = Image.new('L',size)
         n=0
