@@ -1,0 +1,2 @@
+python -m pip install python-mnist
+python -m pip install numpy

@@ -214,15 +214,15 @@ this xan be done as it allows us to add the contence of blank without removing o
 
 
 
-when talking I will be refering to the aereas with a # in them 
+when talking I will be refering to the aereas with a # in them
 
 
 
-waits = \[\[#],\[#]] for this each # will be array sotring all the lists of waits for each nuron in that layer wich lists will be the waits = \[\[\[#],\[#]],\[\[#],\[#],\[#]]] in this exsample we have to hiden layers the first with 2 nurons and the second with 3 
+waits = \[\[#],\[#]] for this each # will be array sotring all the lists of waits for each nuron in that layer wich lists will be the waits = \[\[\[#],\[#]],\[\[#],\[#],\[#]]] in this exsample we have to hiden layers the first with 2 nurons and the second with 3
 
 
 
-note : I have not included the waits for the conections between the last hiden layer and the output will add that later 
+note : I have not included the waits for the conections between the last hiden layer and the output will add that later
 
 
 
@@ -236,15 +236,217 @@ I think this is where I will elave it for this session and next will work on wha
 
 \-use the mnist dataset (currently do not now how that would work without the libarys)
 
-\-make a separate program to tern the minst into actual image files then use pillow for processing 
+\-make a separate program to tern the minst into actual image files then use pillow for processing
 
-\-make my own images though asprite and use pillow 
+\-make my own images though asprite and use pillow
 
 \-learn tkinter and make a drawing pad (I think this might be something for stage 2 but not now)
 
 
 
 *any way end of session 1*
+
+
+
+**session 2**
+
+
+
+for this session I decided to go for making a program to convert the mnist dataset into pngs wich may seam counter productive as I will convert them strait back into numbers in the program but I chose this method as I think I will learn th most and it means I can use the system for any saved image if I waa\\nt to add a drawing pad or use my own images later on a started by testing image generation using pillow
+
+
+
+from PIL import Image
+
+
+
+\# Setting the size of the image
+
+size = (28, 28)
+
+
+
+\# Creating a new image with RGB mode
+
+new\_image = Image.new('L', size, color='white')
+
+new\_image.putpixel((10,10),(0))
+
+\# Save the image
+
+new\_image.save('new\_image.png')
+
+
+
+and found some code to get the data formatted nicly note: thr following was not done by me I classed this as not agensit the rules as this is kind of an extra program just to get the data I will still make the actual image maker thow just usiong code that's not mine for garthering and making the arrays \[my network will go of the images made not this]
+
+
+
+mndata = MNIST('./mnist\_data')
+
+mndata.gz = True
+
+
+
+train\_images, train\_labels = mndata.load\_training()
+
+test\_images, test\_labels = mndata.load\_testing()
+
+
+
+def flatten\_image(flat\_img):
+
+&#x20;   return flat\_img 
+
+def group\_by\_digit(images, labels):
+
+&#x20;   grouped = \[\[] for \_ in range(10)]
+
+&#x20;   for img, label in zip(images, labels):
+
+&#x20;       grouped\[label].append(flatten\_image(img))
+
+&#x20;   return grouped
+
+
+
+train\_grouped = group\_by\_digit(train\_images, train\_labels)
+
+test\_grouped = group\_by\_digit(test\_images, test\_labels)
+
+
+
+print("Training counts:", \[len(x) for x in train\_grouped])
+
+print("Test counts:", \[len(x) for x in test\_grouped])
+
+
+
+so then I tested just making one image  
+
+
+
+from mnist import MNIST
+
+from PIL import Image
+
+
+
+\#start of not mine
+
+mndata = MNIST('./mnist\_data')
+
+mndata.gz = True
+
+
+
+train\_images, train\_labels = mndata.load\_training()
+
+test\_images, test\_labels = mndata.load\_testing()
+
+
+
+def flatten\_image(flat\_img):
+
+&#x20;   return flat\_img 
+
+
+
+def group\_by\_digit(images, labels):
+
+&#x20;   grouped = \[\[] for \_ in range(10)]
+
+&#x20;   for img, label in zip(images, labels):
+
+&#x20;       grouped\[label].append(flatten\_image(img))
+
+&#x20;   return grouped
+
+
+
+train\_grouped = group\_by\_digit(train\_images, train\_labels)
+
+test\_grouped = group\_by\_digit(test\_images, test\_labels)
+
+
+
+print("Training counts:", \[len(x) for x in train\_grouped])
+
+print("Test counts:", \[len(x) for x in test\_grouped])
+
+\#end of not mine \[rest is mine]
+
+
+
+size = (28, 28)
+
+new\_image = Image.new('L',size)
+
+n=0
+
+for y in range (28):
+
+&#x20;   for x in range (28):
+
+&#x20;       new\_image.putpixel((x,y),train\_grouped\[8]\[0]\[n])
+
+&#x20;       n+=1
+
+new\_image.save('test1.png')
+
+
+
+this sucsesfuly made a image so I will now scale this to make them all and this is the code that makes all 70,000 \[I am just showing the imag generation code I made]
+
+
+
+for a in range(10):
+
+&#x20;   for i in range (len(train\_grouped\[a])):
+
+&#x20;       size = (28, 28)
+
+&#x20;       new\_image = Image.new('L',size)
+
+&#x20;       n=0
+
+&#x20;       for y in range (28):
+
+&#x20;           for x in range (28):
+
+&#x20;               new\_image.putpixel((x,y),train\_grouped\[a]\[i]\[n])
+
+&#x20;               n+=1
+
+&#x20;       name="images/training/"+str(a)+"\_"+str(i)+".png"
+
+&#x20;       new\_image.save(name)
+
+for a in range(10):
+
+&#x20;   for i in range (len(test\_images\[a])):
+
+&#x20;       size = (28, 28)
+
+&#x20;       new\_image = Image.new('L',size)
+
+&#x20;       n=0
+
+&#x20;       for y in range (28):
+
+&#x20;           for x in range (28):
+
+&#x20;               new\_image.putpixel((x,y),test\_grouped\[a]\[i]\[n])
+
+&#x20;               n+=1
+
+&#x20;       name="images/testing/"+str(a)+"\_"+str(i)+".png"
+
+&#x20;       new\_image.save(name)
+
+
+
+the code makes all images saving them in 2 separate files for the training set and one for the test set the names are also named like a\_i.png as a represents the correct number wich iu can use for training / testing and the I then gives them all a speert name 
 
 &#x09;
 
