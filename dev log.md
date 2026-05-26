@@ -1,10 +1,10 @@
-**base line (session 0)**
+base line (session 0)
 
 
 
 
 
-*what is the project?*
+what is the project?
 
 
 
@@ -12,7 +12,7 @@ the aim is to build a basic neural network based on my current knowledge without
 
 
 
-*what is my current knowledge?*
+what is my current knowledge?
 
 
 
@@ -20,7 +20,7 @@ I am currently a y9 student studying computer science who occasionally dose pyth
 
 
 
-*what is the point of this project?*
+what is the point of this project?
 
 
 
@@ -28,7 +28,7 @@ the aim is to use this a learning experiment and possibly as a project to go ont
 
 
 
-*how will I do / what are the rules?*
+how will I do / what are the rules?
 
 
 
@@ -80,11 +80,11 @@ aim - currently unknown hoping to do it based off how the rest of it goes
 
 
 
-**session 1** (will be formatted so first just by my thoughts on what I might do and just thoughts before starting the session on the whole project and that session then when it says session 1 dev log will be me reporting on what I did this will continue for the whole project)
+session 1 (will be formatted so first just by my thoughts on what I might do and just thoughts before starting the session on the whole project and that session then when it says session 1 dev log will be me reporting on what I did this will continue for the whole project)
 
 
 
-*plan*
+plan
 
 
 
@@ -118,7 +118,7 @@ this session aim to just start and see where it goes
 
 
 
-*session 1 dev log (this is what I actually did)*
+session 1 dev log (this is what I actually did)
 
 
 
@@ -244,11 +244,11 @@ I think this is where I will elave it for this session and next will work on wha
 
 
 
-*any way end of session 1*
+any way end of session 1
 
 
 
-**session 2**
+session 2
 
 
 
@@ -296,7 +296,7 @@ test\_images, test\_labels = mndata.load\_testing()
 
 def flatten\_image(flat\_img):
 
-&#x20;   return flat\_img 
+&#x20;   return flat\_img
 
 def group\_by\_digit(images, labels):
 
@@ -322,7 +322,7 @@ print("Test counts:", \[len(x) for x in test\_grouped])
 
 
 
-so then I tested just making one image  
+so then I tested just making one image
 
 
 
@@ -348,7 +348,7 @@ test\_images, test\_labels = mndata.load\_testing()
 
 def flatten\_image(flat\_img):
 
-&#x20;   return flat\_img 
+&#x20;   return flat\_img
 
 
 
@@ -446,7 +446,261 @@ for a in range(10):
 
 
 
-the code makes all images saving them in 2 separate files for the training set and one for the test set the names are also named like a\_i.png as a represents the correct number wich iu can use for training / testing and the I then gives them all a speert name 
+the code makes all images saving them in 2 separate files for the training set and one for the test set the names are also named like a\_i.png as a represents the correct number wich iu can use for training / testing and the I then gives them all a speert name
 
-&#x09;
+
+
+session 3
+
+
+
+aim
+
+
+
+make a program to tern the images back into an array for the network to procces
+
+
+
+log I started with a slight edit to how the image maker works so now instead or reseting the second number every new digit it carrys so for training gose from 1-60000 new code bellow
+
+
+
+from mnist import MNIST
+
+from PIL import Image
+
+
+
+mndata = MNIST('./mnist\_data')
+
+mndata.gz = True
+
+
+
+train\_images, train\_labels = mndata.load\_training()
+
+test\_images, test\_labels = mndata.load\_testing()
+
+
+
+def flatten\_image(flat\_img):
+
+&#x20;   return flat\_img
+
+def group\_by\_digit(images, labels):
+
+&#x20;   grouped = \[\[] for \_ in range(10)]
+
+&#x20;   for img, label in zip(images, labels):
+
+&#x20;       grouped\[label].append(flatten\_image(img))
+
+&#x20;   return grouped
+
+
+
+train\_grouped = group\_by\_digit(train\_images, train\_labels)
+
+test\_grouped = group\_by\_digit(test\_images, test\_labels)
+
+
+
+print("Training counts:", \[len(x) for x in train\_grouped])
+
+print("Test counts:", \[len(x) for x in test\_grouped])
+
+count=0
+
+for a in range(10):
+
+&#x20;   for i in range (len(train\_grouped\[a])):
+
+&#x20;       size = (28, 28)
+
+&#x20;       new\_image = Image.new('L',size)
+
+&#x20;       n=0
+
+&#x20;       count+=1
+
+&#x20;       for y in range (28):
+
+&#x20;           for x in range (28):
+
+&#x20;               new\_image.putpixel((x,y),train\_grouped\[a]\[i]\[n])
+
+&#x20;               n+=1
+
+&#x20;       name="images/training/"+str(a)+"\_"+str(count)+".png"
+
+&#x20;       new\_image.save(name)
+
+for a in range(10):
+
+&#x20;   for i in range (len(test\_images\[a])):
+
+&#x20;       size = (28, 28)
+
+&#x20;       new\_image = Image.new('L',size)
+
+&#x20;       n=0
+
+
+
+this allows for the method I will be using to tern it back into an array to work wich starts as follows
+
+
+
+&#x20;   num=0
+
+&#x20;   for x in range(1,60001):
+
+&#x20;       training\_values= \[\[],\[],\[],\[],\[],\[],\[],\[],\[],\[]]
+
+&#x20;       not\_found=True
+
+&#x20;       file\_name = ""
+
+&#x20;       while not\_found and num <= 10:
+
+&#x20;           try:
+
+&#x20;               image = Image.open("images/training/"+str(num)+"\_"+str(x)+".png")
+
+&#x20;               not\_found = False
+
+&#x20;           except:
+
+&#x20;               num+=1
+
+
+
+this loops thought all the images and makes the name for the file change if it is not found this in practise means that it will loop thought all the 0s lets say there is 10000 but then when it trys 0\_10001 it will fail and num will increase meaning it will now try 1\_10001 this will continue for all digits up till num gose past 10
+
+
+
+I then did the following test
+
+
+
+training\_values= \[\[],\[],\[],\[],\[],\[],\[],\[],\[],\[]]
+
+test = \[\[1,65,3,4,5,6,7,8,43]]
+
+test2 = \[\[1,2,3,4,5,6,7,8,9]]
+
+training\_values\[0].extend(test)
+
+training\_values\[0].extend(test2)
+
+print(training\_values)
+
+
+
+output
+
+
+
+\[\[\[1, 65, 3, 4, 5, 6, 7, 8, 43], \[1, 2, 3, 4, 5, 6, 7, 8, 9]], \[], \[], \[], \[], \[], \[], \[], \[], \[]]
+
+
+
+to test my idea for the method of actualy making the array and it worked so I will make it do the following loop thought the image from left to right adding each iimage inside of something that will act like test/test2 then use the extend to add them at training\_values\[num] so they will be assigned the index maching there digit this was the first full test
+
+
+
+def make\_input\_array\_training():
+
+&#x20;   num=0
+
+&#x20;   for x in range(1,60001):
+
+&#x20;       training\_values= \[\[],\[],\[],\[],\[],\[],\[],\[],\[],\[]]
+
+&#x20;       not\_found=True
+
+&#x20;       file\_name = ""
+
+&#x20;       while not\_found and num <= 10:
+
+&#x20;           try:
+
+&#x20;               image = Image.open("images/training/"+str(num)+"\_"+str(x)+".png")
+
+&#x20;               not\_found = False
+
+&#x20;           except:
+
+&#x20;               num+=1
+
+&#x20;       width, hight = image.size
+
+&#x20;       pixel\_values= \[\[]]
+
+&#x20;       for y in range(hight):
+
+&#x20;            for i in range(width):
+
+&#x20;               pixel\_values\[0].append(image.getpixel((i,y)))
+
+&#x20;       training\_values\[num].extend(pixel\_values)
+
+&#x20;   print(training\_values)
+
+&#x20;   end = input("enter to end")
+
+make\_input\_array\_training()
+
+
+
+
+
+but it only output one image for 9 so there was an issue sorry editing this as coding tern out I was just re seting the training values every time and now it works so here is the final code
+
+
+
+def make\_input\_array\_training():
+
+&#x20;   num=0
+
+&#x20;   training\_values= \[\[],\[],\[],\[],\[],\[],\[],\[],\[],\[]]
+
+&#x20;   for x in range(1,60001):
+
+&#x20;       not\_found=True
+
+&#x20;       file\_name = ""
+
+&#x20;       while not\_found and num <= 10:
+
+&#x20;           try:
+
+&#x20;               image = Image.open("images/training/"+str(num)+"\_"+str(x)+".png")
+
+&#x20;               not\_found = False
+
+&#x20;           except:
+
+&#x20;               num+=1
+
+&#x20;       width, hight = image.size
+
+&#x20;       pixel\_values= \[\[]]
+
+&#x20;       for y in range(hight):
+
+&#x20;            for i in range(width):
+
+&#x20;               pixel\_values\[0].append(image.getpixel((i,y)))
+
+&#x20;       training\_values\[num].extend(pixel\_values)
+
+&#x20;   print(training\_values)
+
+&#x20;   end = input("enter to end")
+
+&#x20;   return training\_values
+
+training\_input\_array = make\_input\_array\_training()
 
