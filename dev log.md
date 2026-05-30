@@ -914,9 +914,9 @@ note: in the finil code there will also be ref and then a number that will not c
 
 &#x20;       *outputs=\[]*
 
-&#x20;    *#ref4 end #ref5*
+&#x20;   np.exp(x) / np.sum(np.exp(inputs), axis=0) *#ref4 end #ref5*
 
-&#x20;   
+&#x20;
 
 
 
@@ -976,7 +976,7 @@ so I changed it by adding other loop eset nothing complicated but it still was n
 
 
 
-this section of code implaments the eqasions uused by each nuron wich to my knolage is all of the waits timesed by the value of the corasponding nuron in the privus layer addaded together plus a bise for that nuron all put into a sigmoid function I will show this in a eqasion bellow where Wx is the waight for nuron x and Ox is the output from nuron x and B is the bise of the nuron dowing the equation 
+this section of code implaments the eqasions uused by each nuron wich to my knolage is all of the waits timesed by the value of the corasponding nuron in the privus layer addaded together plus a bise for that nuron all put into a sigmoid function I will show this in a eqasion bellow where Wx is the waight for nuron x and Ox is the output from nuron x and B is the bise of the nuron dowing the equation
 
 
 
@@ -984,11 +984,11 @@ not sigmoided = (W1\*O1+W2\*O2+...+Wn\*On+B)
 
 
 
-then proform a sigmoid on it 
+then proform a sigmoid on it
 
 
 
-*ref 3* 
+*ref 3*
 
 
 
@@ -1000,7 +1000,7 @@ code for a sigmoid found at https://coderivers.org/blog/sigmoid-function-python/
 
 
 
-this section takes in the data to find the values for a image in the arrays we made erlyer then proforms the nessasary steps to use the array not actualy tested it yet as need to make something to actualy make the waits and eset but I think it is correct and works as follows 
+this section takes in the data to find the values for a image in the arrays we made erlyer then proforms the nessasary steps to use the array not actualy tested it yet as need to make something to actualy make the waits and eset but I think it is correct and works as follows
 
 
 
@@ -1022,7 +1022,7 @@ it loads the info for the image we want to process and has it as the input this 
 
 it loops though the nurons preforming the calculation from befor and adds them to the output (this represents the outputs for the layer currently being proced)
 
-&#x20;       
+&#x20;
 
 &#x09;inputs = outputs
 
@@ -1051,4 +1051,8 @@ I new I had to use a soft max or something along those lines to convert the outp
 
 
 https://readmedium.com/understand-the-softmax-function-in-minutes-f3a59641e86d
+
+
+
+
 

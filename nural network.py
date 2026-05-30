@@ -89,7 +89,7 @@ def run_network(image_array,digit,image): #ref4
             outputs.append(run_nuron(inputs))
         inputs = outputs
         outputs=[]
-     #ref4 end #ref5
+     np.exp(x) / np.sum(np.exp(inputs), axis=0)#ref4 end #ref5
     
 
 
