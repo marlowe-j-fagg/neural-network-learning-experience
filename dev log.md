@@ -1054,5 +1054,253 @@ https://readmedium.com/understand-the-softmax-function-in-minutes-f3a59641e86d
 
 
 
+**session 5**
+
+
+
+short session just gowing to sort some things out and add a method of calullating diferance between output and correct anser
+
+
+
+all I have done is add the following and removed the refs from befor and removed the testing prints from making the waits arrays
+
+
+
+def rate\_output(output,corect\_digit):
+
+&#x20;   for x in range (len(output)):
+
+&#x20;       if x != corect\_digit
+
+&#x20;           if output\[corect\_digit]-output\[x]>0:
+
+&#x20;               corect = True
+
+&#x20;           else:
+
+&#x20;               corect=False
+
+&#x20;   closness = 1-output\[corect\_digit]
+
+&#x20;   return closness,corect
+
+
+
+this tells us weather the anser is correct by chking that the correct anser has the highest proberbility and return the diferance between that digits proberbility and 100% I don't know if I will use that I might if I want to check the affect of small changes any way that's about it here is the full updated code
+
+
+
+from PIL import Image
+
+import os
+
+import numpy as np
+
+
+
+os.chdir(os.path.dirname(os.path.abspath(\_\_file\_\_)))
+
+
+
+def sigmoid(x):
+
+&#x20;   return 1 / (1 + np.exp(-x))
+
+
+
+
+
+def make\_waits\_and\_bises\_array():
+
+&#x20;   blank= \[]
+
+&#x20;   waits = \[]
+
+&#x20;   layers = int(input("enter number of layers including input but not output"))
+
+&#x20;   for x in range (layers):
+
+&#x20;       waits.append(\[])
+
+&#x20;   for x in range (layers):
+
+&#x20;       nurons = int(input("enter number of nurons in layer"))
+
+&#x20;       for i in range(nurons):
+
+&#x20;           waits\[x].append(\[])
+
+&#x20;   return waits,waits
+
+
+
+def make\_input\_array\_training():
+
+&#x20;   num=0
+
+&#x20;   training\_values= \[\[],\[],\[],\[],\[],\[],\[],\[],\[],\[]]
+
+&#x20;   for x in range(1,60001):
+
+&#x20;       not\_found=True
+
+&#x20;       file\_name = ""
+
+&#x20;       while not\_found and num <= 10:
+
+&#x20;           try:
+
+&#x20;               image = Image.open("images/training/"+str(num)+"\_"+str(x)+".png")
+
+&#x20;               not\_found = False
+
+&#x20;           except:
+
+&#x20;               num+=1
+
+&#x20;       width, hight = image.size
+
+&#x20;       pixel\_values= \[\[]]
+
+&#x20;       for y in range(hight):
+
+&#x20;            for i in range(width):
+
+&#x20;               pixel\_values\[0].append((image.getpixel((i,y)))/255)
+
+&#x20;       training\_values\[num].extend(pixel\_values)
+
+&#x20;   print(training\_values\[5]\[1])
+
+&#x20;   end = input("enter to end")
+
+&#x20;   return training\_values
+
+
+
+def make\_input\_array\_testing():
+
+&#x20;   num=0
+
+&#x20;   testing\_values= \[\[],\[],\[],\[],\[],\[],\[],\[],\[],\[]]
+
+&#x20;   for x in range(1,60001):
+
+&#x20;       not\_found=True
+
+&#x20;       file\_name = ""
+
+&#x20;       while not\_found and num <= 10:
+
+&#x20;           try:
+
+&#x20;               image = Image.open("images/testing/"+str(num)+"\_"+str(x)+".png")
+
+&#x20;               not\_found = False
+
+&#x20;           except:
+
+&#x20;               num+=1
+
+&#x20;       width, hight = image.size
+
+&#x20;       pixel\_values= \[\[]]
+
+&#x20;       for y in range(hight):
+
+&#x20;            for i in range(width):
+
+&#x20;               pixel\_values\[0].append((image.getpixel((i,y)))/255)
+
+&#x20;       testing\_values\[num].extend(pixel\_values)
+
+&#x20;   print(testing\_values\[5]\[1])
+
+&#x20;   end = input("enter to end")
+
+&#x20;   return testing\_values
+
+
+
+def run\_nuron(inputs): 
+
+&#x20;   WxN=\[]
+
+&#x20;   un\_sigmoided = 0
+
+&#x20;   for x in range(len(waits\[layer]\[nuron])):
+
+&#x20;       WxN.append(waits\[layer]\[nuron]\[x]\*inputs\[x])
+
+&#x20;   for x in range (len(WxN)):
+
+&#x20;       un\_sigmoided+=WxN\[x]
+
+&#x20;   un\_sigmoided+=bieses\[layer]\[nuron]
+
+&#x20;   output = sigmoid(un\_sigmoided)
+
+&#x20;   return output
+
+
+
+def run\_network(image\_array,digit,image):
+
+&#x20;   inputs=image\_array\[digit]\[image]
+
+&#x20;   outputs=\[]
+
+&#x20;   for x in range(len(waits)):
+
+&#x20;       for i in range(len(waits\[x])):
+
+&#x20;           outputs.append(run\_nuron(inputs))
+
+&#x20;       inputs = outputs
+
+&#x20;       outputs=\[]
+
+&#x20;   np.exp(x) / np.sum(np.exp(inputs), axis=0)
+
+&#x20;    
+
+def rate\_output(output,corect\_digit):
+
+&#x20;   for x in range (len(output)):
+
+&#x20;       if x != corect\_digit
+
+&#x20;           if output\[corect\_digit]-output\[x]>0:
+
+&#x20;               corect = True
+
+&#x20;           else:
+
+&#x20;               corect=False
+
+&#x20;   closness = 1-output\[corect\_digit]
+
+&#x20;   return closness,corect
+
+
+
+waits,bieses = make\_waits\_and\_bises\_array()
+
+
+
+training\_input\_array = make\_input\_array\_training()
+
+
+
+testing\_input\_array = make\_input\_array\_testing
+
+
+
+
+
+
+
+
+
 
 

@@ -5,26 +5,20 @@ import numpy as np
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
 def sigmoid(x):
-    return 1 / (1 + np.exp(-x))#ref 3
+    return 1 / (1 + np.exp(-x))
 
 
-def make_waits_and_bises_array(): #ref 1
+def make_waits_and_bises_array():
     blank= []
     waits = []
     layers = int(input("enter number of layers including input but not output"))
     for x in range (layers):
         waits.append([])
-    print (waits)
     for x in range (layers):
         nurons = int(input("enter number of nurons in layer"))
         for i in range(nurons):
             waits[x].append([])
-        print(waits)
-    print(waits)
-    print(len(waits))
-    for x in range(len(waits)):
-        print (len(waits[x]))
-    return waits,waits #ref 1 end
+    return waits,waits
 
 def make_input_array_training():
     num=0
@@ -70,7 +64,7 @@ def make_input_array_testing():
     end = input("enter to end")
     return testing_values
 
-def run_nuron(inputs): #ref2
+def run_nuron(inputs): 
     WxN=[]
     un_sigmoided = 0
     for x in range(len(waits[layer][nuron])):
@@ -79,9 +73,9 @@ def run_nuron(inputs): #ref2
         un_sigmoided+=WxN[x]
     un_sigmoided+=bieses[layer][nuron]
     output = sigmoid(un_sigmoided)
-    return output #ref2 end
+    return output
 
-def run_network(image_array,digit,image): #ref4
+def run_network(image_array,digit,image):
     inputs=image_array[digit][image]
     outputs=[]
     for x in range(len(waits)):
@@ -89,9 +83,17 @@ def run_network(image_array,digit,image): #ref4
             outputs.append(run_nuron(inputs))
         inputs = outputs
         outputs=[]
-     np.exp(x) / np.sum(np.exp(inputs), axis=0)#ref4 end #ref5
-    
-
+    np.exp(x) / np.sum(np.exp(inputs), axis=0)
+     
+def rate_output(output,corect_digit):
+    for x in range (len(output)):
+        if x != corect_digit
+            if output[corect_digit]-output[x]>0:
+                corect = True
+            else:
+                corect=False
+    closness = 1-output[corect_digit]
+    return closness,corect
 
 waits,bieses = make_waits_and_bises_array()
 
