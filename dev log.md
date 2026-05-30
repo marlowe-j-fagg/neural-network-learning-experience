@@ -704,3 +704,351 @@ def make\_input\_array\_training():
 
 training\_input\_array = make\_input\_array\_training()
 
+
+
+**session 4**
+
+
+
+*how will it work*
+
+
+
+sorry this sessions documentaition will be a bit diferant as I am running out of time in the holidays so I am just gowing to do all the coding then come back to this I will mark sections of code like #ref x x being a number then will use that to explain the code so I will post the full thing bellow then have something like
+
+*ref 1*
+
+
+
+and then like what is dose and how i got to it
+
+
+
+i also might not have the testing code but will explain the tests the same will probly aply to session 5 as tomotow is the last day of the half term so we will be in the same situation unless i get a lot done today
+
+
+
+note: in the finil code there will also be ref and then a number that will not coralate to today or tomorrow but like to a referances document in wich i will explain what each pice of code dose
+
+
+
+*from PIL import Image*
+
+*import os*
+
+*import numpy as np*
+
+
+
+*os.chdir(os.path.dirname(os.path.abspath(\_\_file\_\_)))*
+
+
+
+*def sigmoid(x):*
+
+&#x20;   *return 1 / (1 + np.exp(-x))#ref 3*
+
+
+
+
+
+*def make\_waits\_and\_bises\_array(): #ref 1*
+
+&#x20;   *blank= \[]*
+
+&#x20;   *waits = \[]*
+
+&#x20;   *layers = int(input("enter number of layers including input but not output"))*
+
+&#x20;   *for x in range (layers):*
+
+&#x20;       *waits.append(\[])*
+
+&#x20;   *print (waits)*
+
+&#x20;   *for x in range (layers):*
+
+&#x20;       *nurons = int(input("enter number of nurons in layer"))*
+
+&#x20;       *for i in range(nurons):*
+
+&#x20;           *waits\[x].append(\[])*
+
+&#x20;       *print(waits)*
+
+&#x20;   *print(waits)*
+
+&#x20;   *print(len(waits))*
+
+&#x20;   *for x in range(len(waits)):*
+
+&#x20;       *print (len(waits\[x]))*
+
+&#x20;   *return waits,waits #ref 1 end*
+
+
+
+*def make\_input\_array\_training():*
+
+&#x20;   *num=0*
+
+&#x20;   *training\_values= \[\[],\[],\[],\[],\[],\[],\[],\[],\[],\[]]*
+
+&#x20;   *for x in range(1,60001):*
+
+&#x20;       *not\_found=True*
+
+&#x20;       *file\_name = ""*
+
+&#x20;       *while not\_found and num <= 10:*
+
+&#x20;           *try:*
+
+&#x20;               *image = Image.open("images/training/"+str(num)+"\_"+str(x)+".png")*
+
+&#x20;               *not\_found = False*
+
+&#x20;           *except:*
+
+&#x20;               *num+=1*
+
+&#x20;       *width, hight = image.size*
+
+&#x20;       *pixel\_values= \[\[]]*
+
+&#x20;       *for y in range(hight):*
+
+&#x20;            *for i in range(width):*
+
+&#x20;               *pixel\_values\[0].append((image.getpixel((i,y)))/255)*
+
+&#x20;       *training\_values\[num].extend(pixel\_values)*
+
+&#x20;   *print(training\_values\[5]\[1])*
+
+&#x20;   *end = input("enter to end")*
+
+&#x20;   *return training\_values*
+
+
+
+*def make\_input\_array\_testing():*
+
+&#x20;   *num=0*
+
+&#x20;   *testing\_values= \[\[],\[],\[],\[],\[],\[],\[],\[],\[],\[]]*
+
+&#x20;   *for x in range(1,60001):*
+
+&#x20;       *not\_found=True*
+
+&#x20;       *file\_name = ""*
+
+&#x20;       *while not\_found and num <= 10:*
+
+&#x20;           *try:*
+
+&#x20;               *image = Image.open("images/testing/"+str(num)+"\_"+str(x)+".png")*
+
+&#x20;               *not\_found = False*
+
+&#x20;           *except:*
+
+&#x20;               *num+=1*
+
+&#x20;       *width, hight = image.size*
+
+&#x20;       *pixel\_values= \[\[]]*
+
+&#x20;       *for y in range(hight):*
+
+&#x20;            *for i in range(width):*
+
+&#x20;               *pixel\_values\[0].append((image.getpixel((i,y)))/255)*
+
+&#x20;       *testing\_values\[num].extend(pixel\_values)*
+
+&#x20;   *print(testing\_values\[5]\[1])*
+
+&#x20;   *end = input("enter to end")*
+
+&#x20;   *return testing\_values*
+
+
+
+*def run\_nuron(inputs): #ref2*
+
+&#x20;   *WxN=\[]*
+
+&#x20;   *un\_sigmoided = 0*
+
+&#x20;   *for x in range(len(waits\[layer]\[nuron])):*
+
+&#x20;       *WxN.append(waits\[layer]\[nuron]\[x]\*inputs\[x])*
+
+&#x20;   *for x in range (len(WxN)):*
+
+&#x20;       *un\_sigmoided+=WxN\[x]*
+
+&#x20;   *un\_sigmoided+=bieses\[layer]\[nuron]*
+
+&#x20;   *output = sigmoid(un\_sigmoided)*
+
+&#x20;   *return output #ref2 end*
+
+
+
+*def run\_network(image\_array,digit,image): #ref4*
+
+&#x20;   *inputs=image\_array\[digit]\[image]*
+
+&#x20;   *outputs=\[]*
+
+&#x20;   *for x in range(len(waits)):*
+
+&#x20;       *for i in range(len(waits\[x])):*
+
+&#x20;           *outputs.append(run\_nuron(inputs))*
+
+&#x20;       *inputs = outputs*
+
+&#x20;       *outputs=\[]*
+
+&#x20;    *#ref4 end #ref5*
+
+&#x20;   
+
+
+
+
+
+*waits,bieses = make\_waits\_and\_bises\_array()*
+
+
+
+*training\_input\_array = make\_input\_array\_training()*
+
+
+
+*testing\_input\_array = make\_input\_array\_testing*
+
+
+
+
+
+*ref 1*
+
+
+
+first started to edit it as I needed to add the layer for the first wiats as it was only dowing conection from the hiden layer to the other hidenlayers and the output not from the input to the output I mesed around with that and also noticed it just completely did the wrong thing when testing that len(waits\[x]) would output the correct thing I noticed thst it was adding only adding one thing and not dowing anything with the inputs see bellow
+
+
+
+def make\_waits\_aray():
+
+&#x20;   blank= \[\[]]
+
+&#x20;   waits = \[]
+
+&#x20;   layers = int(input("enter number of layers"))
+
+&#x20;   for x in range (layers):
+
+&#x20;       waits.extend(blank)
+
+&#x20;   print (waits)
+
+&#x20;   for x in range (layers):
+
+&#x20;       nurons = int(input("enter number of nurons in layer",x))
+
+&#x20;       waits\[x].extend(blank)
+
+&#x20;   print(waits)
+
+
+
+so I changed it by adding other loop eset nothing complicated but it still was not working I tride changing to append still did nothing (but left it that way hence the change you see in the code) terned out as when adding the \[] for the layers as I was using blank instead ofrr just \[] it ment what ever I did to one affect all of them basicly intatwining the diferant layers so after changing that to \[] instead it worked so and the changes in the actual thing it tell you to input is just as it privusly did not include the waits from output to first hiden layer
+
+
+
+*ref 2*
+
+
+
+this section of code implaments the eqasions uused by each nuron wich to my knolage is all of the waits timesed by the value of the corasponding nuron in the privus layer addaded together plus a bise for that nuron all put into a sigmoid function I will show this in a eqasion bellow where Wx is the waight for nuron x and Ox is the output from nuron x and B is the bise of the nuron dowing the equation 
+
+
+
+not sigmoided = (W1\*O1+W2\*O2+...+Wn\*On+B)
+
+
+
+then proform a sigmoid on it 
+
+
+
+*ref 3* 
+
+
+
+code for a sigmoid found at https://coderivers.org/blog/sigmoid-function-python/ origanaly fought it wwas just a thing in numpy but had no idea how it worked so used the source above
+
+
+
+*ref 4*
+
+
+
+this section takes in the data to find the values for a image in the arrays we made erlyer then proforms the nessasary steps to use the array not actualy tested it yet as need to make something to actualy make the waits and eset but I think it is correct and works as follows 
+
+
+
+inputs=image\_array\[digit]\[image]
+
+
+
+it loads the info for the image we want to process and has it as the input this sets as are first layer in the network
+
+
+
+&#x20;   for x in range(len(waits)):
+
+&#x20;       for i in range(len(waits\[x])):
+
+&#x20;           outputs.append(run\_nuron(inputs))
+
+
+
+it loops though the nurons preforming the calculation from befor and adds them to the output (this represents the outputs for the layer currently being proced)
+
+&#x20;       
+
+&#x09;inputs = outputs
+
+&#x20;       outputs=\[]
+
+
+
+then it resets the output and sets the privusky calculated values for each nuron as the input for the next
+
+
+
+np.exp(x) / np.sum(np.exp(inputs), axis=0)
+
+
+
+uses a SoftMax to tern the sigmoided out put into a list of probabilitys that add to 1 to reprecent how shor the network is that it is each image is a curtain number the highest will be the one it thinks the image is most likely to be
+
+
+
+*ref 5*
+
+
+
+I new I had to use a soft max or something along those lines to convert the output of the nuron into a probability for the final output but did not know how to do that or what it should look like so I used the following sorce and just used it without the function as it was only needed once
+
+
+
+https://readmedium.com/understand-the-softmax-function-in-minutes-f3a59641e86d
+
